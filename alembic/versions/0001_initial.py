@@ -4,6 +4,7 @@ Revision ID: 0001_initial
 Revises:
 Create Date: 2026-09-26
 """
+
 from collections.abc import Sequence
 
 import sqlalchemy as sa
@@ -66,8 +67,12 @@ def upgrade() -> None:
             "tenant_id", "product_id", name="uq_inventory_tenant_product"
         ),
     )
-    op.create_index("ix_inventory_items_tenant_id", "inventory_items", ["tenant_id"], unique=False)
-    op.create_index("ix_inventory_items_product_id", "inventory_items", ["product_id"], unique=False)
+    op.create_index(
+        "ix_inventory_items_tenant_id", "inventory_items", ["tenant_id"], unique=False
+    )
+    op.create_index(
+        "ix_inventory_items_product_id", "inventory_items", ["product_id"], unique=False
+    )
 
     op.create_table(
         "inventory_movements",
@@ -80,8 +85,18 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["tenant_id"], ["tenants.id"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(["product_id"], ["products.id"], ondelete="CASCADE"),
     )
-    op.create_index("ix_inventory_movements_tenant_id", "inventory_movements", ["tenant_id"], unique=False)
-    op.create_index("ix_inventory_movements_product_id", "inventory_movements", ["product_id"], unique=False)
+    op.create_index(
+        "ix_inventory_movements_tenant_id",
+        "inventory_movements",
+        ["tenant_id"],
+        unique=False,
+    )
+    op.create_index(
+        "ix_inventory_movements_product_id",
+        "inventory_movements",
+        ["product_id"],
+        unique=False,
+    )
 
     op.create_table(
         "orders",
@@ -107,7 +122,9 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["order_id"], ["orders.id"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(["product_id"], ["products.id"]),
     )
-    op.create_index("ix_order_items_order_id", "order_items", ["order_id"], unique=False)
+    op.create_index(
+        "ix_order_items_order_id", "order_items", ["order_id"], unique=False
+    )
 
 
 def downgrade() -> None:
